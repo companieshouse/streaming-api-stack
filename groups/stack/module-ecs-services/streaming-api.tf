@@ -18,7 +18,7 @@ resource "aws_ecs_service" "streaming-api-ecs-service" {
   load_balancer {
     target_group_arn = aws_lb_target_group.streaming-api-target_group.arn
     container_port   = local.eric_stream_port
-    container_name   = "eric_stream"
+    container_name   = "eric-stream"
   }
 }
 
@@ -62,7 +62,7 @@ resource "aws_ecs_task_definition" "streaming-api-task-definition" {
   container_definitions = templatefile(
     "${path.module}/streaming-api-task-definition.tmpl", local.definition
   )
-  network_mode = "awsvpc"
+  # network_mode = "awsvpc"
 }
 
 resource "aws_lb_target_group" "streaming-api-target_group" {
@@ -70,6 +70,7 @@ resource "aws_lb_target_group" "streaming-api-target_group" {
   port     = local.eric_stream_port
   protocol = "HTTP"
   vpc_id   = var.vpc_id
+  # target_type = "ip"
 
   health_check {
     healthy_threshold   = "5"

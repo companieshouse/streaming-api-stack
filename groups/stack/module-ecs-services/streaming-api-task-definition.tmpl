@@ -17,8 +17,8 @@
             { "name": "MODE", "value": "stream" },
             { "name": "LOGLEVEL", "value": "${log_level}" },
             { "name": "API_KEY", "value": "secret-api-key-placeholder" },
-            { "name": "MONGODB_URL", "value": "secret-aes256-key-placeholder" },
-            { "name": "MONGODB_URL", "value": "secret-mongo-url-placeholder" }
+            { "name": "AES256_KEY", "value": "secret-aes256-key-placeholder" },
+            { "name": "MONGODB_URL", "value": "mongodb:/mongo-db1-cidev.development.aws.internal:27017" }
         ],
         "name": "eric-stream",
         "image": "${docker_registry}/eric-stream:${eric_stream_version}",
@@ -26,7 +26,7 @@
         "memory": 512,
         "portMappings": [{
             "containerPort": ${eric_stream_port},
-            "hostPort": 0
+            "hostPort": ${eric_stream_port}
         }],
         "logConfiguration": {
             "logDriver": "awslogs",
@@ -56,7 +56,7 @@
         "memory": 512,
         "portMappings": [{
             "containerPort": ${streaming_api_port},
-            "hostPort": 0
+            "hostPort": ${streaming_api_port}
         }],
         "logConfiguration": {
             "logDriver": "awslogs",
