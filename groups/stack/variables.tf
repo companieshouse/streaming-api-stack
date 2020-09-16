@@ -148,7 +148,7 @@ variable "cache_ttl" {
 }
 variable "flush_interval" {
   type = string
-  default = "0"
+  default = "10"
 }
 variable "graceful_shutdown_period" {
   type = string
