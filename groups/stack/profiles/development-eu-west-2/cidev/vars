@@ -15,6 +15,9 @@ internal_top_level_domain = "-cidev.development.aws.internal"
 
 ec2_key_pair_name = "chs-cidev"
 
+asg_max_instance_count = "2"
+asg_desired_instance_count = "2"
+
 # shared configs
 log_level = "TRACE"
 

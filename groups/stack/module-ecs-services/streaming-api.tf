@@ -63,6 +63,7 @@ resource "aws_ecs_task_definition" "streaming-api-task-definition" {
     "${path.module}/streaming-api-task-definition.tmpl", local.definition
   )
   # network_mode = "awsvpc"
+  network_mode = "host"
 }
 
 resource "aws_lb_target_group" "streaming-api-target_group" {
