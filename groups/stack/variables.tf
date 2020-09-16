@@ -54,6 +54,11 @@ variable "log_level" {
   type        = string
   description = "The log level for services to use: TRACE, DEBUG, INFO or ERROR"
 }
+variable "streaming_api_task_desired_count" {
+  default     = 1
+  type        = number
+  description = "Desired number of streaming api tasks"
+}
 
 # EC2
 variable "ec2_key_pair_name" {

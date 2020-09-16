@@ -71,6 +71,10 @@ variable "log_level" {
   type        = string
   description = "The log level to be set in the environment variables for the container."
 }
+variable "streaming_api_task_desired_count" {
+  type        = number
+  description = "Desired number of streaming api tasks"
+}
 
 # Certificates
 variable "ssl_certificate_id" {

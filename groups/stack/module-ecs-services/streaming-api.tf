@@ -8,7 +8,7 @@ resource "aws_ecs_service" "streaming-api-ecs-service" {
   name            = "${var.environment}-streaming-api"
   cluster         = var.ecs_cluster_id
   task_definition = aws_ecs_task_definition.streaming-api-task-definition.arn
-  desired_count   = 1
+  desired_count   = var.streaming_api_task_desired_count
 
   depends_on = [
     aws_lb_target_group.streaming-api-target_group,
@@ -90,6 +90,7 @@ resource "aws_lb" "streaming-api-lb" {
   security_groups = [aws_security_group.internal-service-sg.id]
   subnets         = flatten([split(",", var.application_ids)])
   internal        = true
+  # idle_timeout    = 4000
 }
 
 resource "aws_lb_listener" "streaming-api-lb-listener" {
