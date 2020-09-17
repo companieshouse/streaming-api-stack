@@ -1,0 +1,74 @@
+[
+    {
+        "environment": [
+            { "name": "PORT", "value": "${eric_stream_port}" },
+            { "name": "ACCOUNT_API_URL", "value": "https://account${external_top_level_domain}" },
+            { "name": "DEVELOPER_HUB_URL", "value": "https://developer${external_top_level_domain}" },
+            { "name": "CACHE_URL", "value": "${cache_url}" },
+            { "name": "CACHE_MAX_CONNECTIONS", "value": "${cache_max_connections}" },
+            { "name": "CACHE_MAX_IDLE", "value": "${cache_max_idle}" },
+            { "name": "CACHE_IDLE_TIMEOUT", "value": "${cache_idle_timeout}" },
+            { "name": "CACHE_TTL", "value": "${cache_ttl}" },
+            { "name": "FLUSH_INTERVAL", "value": "${flush_interval}" },
+            { "name": "GRACEFUL_SHUTDOWN_PERIOD", "value": "${graceful_shutdown_period}" },
+            { "name": "DEFAULT_STREAM_LIMIT", "value": "${default_stream_limit}" },
+            { "name": "STREAM_CHECK_INTERVAL_SECONDS", "value": "${stream_check_interval_seconds}" },
+            { "name": "PROXY_TARGET_URLS", "value": "http://localhost:${streaming_api_port}" },
+            { "name": "MODE", "value": "stream" },
+            { "name": "LOGLEVEL", "value": "${log_level}" },
+            { "name": "API_KEY", "value": "secret-api-key-placeholder" },
+            { "name": "AES256_KEY", "value": "secret-aes256-key-placeholder" },
+            { "name": "MONGODB_URL", "value": "mongodb:/mongo-db1-cidev.development.aws.internal:27017" }
+        ],
+        "name": "eric-stream",
+        "image": "${docker_registry}/eric-stream:${eric_stream_version}",
+        "cpu": 1,
+        "memory": 512,
+        "portMappings": [{
+            "containerPort": ${eric_stream_port},
+            "hostPort": ${eric_stream_port}
+        }],
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+                "awslogs-create-group": "true",
+                "awslogs-region": "${aws_region}",
+                "awslogs-group": "/ecs/${name_prefix}/eric-stream",
+                "awslogs-stream-prefix": "ecs"
+            }
+        },
+        "secrets": [
+        ],
+        "essential": true
+    },
+    {
+        "environment": [
+            { "name": "PORT", "value": "${streaming_api_port}" },
+            { "name": "HEARTBEAT_INTERVAL", "value": "${heartbeat_interval}" },
+            { "name": "REQUEST_TIMEOUT", "value": "${request_timeout}" },
+            { "name": "SCHEMA_REGISTRY_URL", "value": "${schema_registry_url}" },
+            { "name": "KAFKA_STREAMING_BROKER_ADDR", "value": "${kafka_streaming_broker_addr}" },
+            { "name": "LOGLEVEL", "value": "${log_level}" }
+        ],
+        "name": "streaming-api",
+        "image": "${docker_registry}/chs-streaming-api:${streaming_api_version}",
+        "cpu": 1,
+        "memory": 512,
+        "portMappings": [{
+            "containerPort": ${streaming_api_port},
+            "hostPort": ${streaming_api_port}
+        }],
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+                "awslogs-create-group": "true",
+                "awslogs-region": "${aws_region}",
+                "awslogs-group": "/ecs/${name_prefix}/streaming-api",
+                "awslogs-stream-prefix": "ecs"
+            }
+        },
+        "secrets": [
+        ],
+        "essential": true
+    }
+]
