@@ -13,7 +13,7 @@
             { "name": "GRACEFUL_SHUTDOWN_PERIOD", "value": "${graceful_shutdown_period}" },
             { "name": "DEFAULT_STREAM_LIMIT", "value": "${default_stream_limit}" },
             { "name": "STREAM_CHECK_INTERVAL_SECONDS", "value": "${stream_check_interval_seconds}" },
-            { "name": "PROXY_TARGET_URLS", "value": "http://localhost:${streaming_api_port}" },
+            { "name": "PROXY_TARGET_URLS", "value": "http://streaming-api:${streaming_api_port}" },
             { "name": "MODE", "value": "stream" },
             { "name": "LOGLEVEL", "value": "${log_level}" },
             { "name": "API_KEY", "value": "secret-api-key-placeholder" },
@@ -28,6 +28,9 @@
             "containerPort": ${eric_stream_port},
             "hostPort": ${eric_stream_port}
         }],
+       "links": [
+         "streaming-api"
+       ],
         "logConfiguration": {
             "logDriver": "awslogs",
             "options": {

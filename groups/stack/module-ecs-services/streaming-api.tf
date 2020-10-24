@@ -62,8 +62,7 @@ resource "aws_ecs_task_definition" "streaming-api-task-definition" {
   container_definitions = templatefile(
     "${path.module}/streaming-api-task-definition.tmpl", local.definition
   )
-  # network_mode = "awsvpc"
-  network_mode = "host"
+  network_mode = "bridge"
 }
 
 resource "aws_lb_target_group" "streaming-api-target_group" {
@@ -71,7 +70,6 @@ resource "aws_lb_target_group" "streaming-api-target_group" {
   port     = local.eric_stream_port
   protocol = "HTTP"
   vpc_id   = var.vpc_id
-  # target_type = "ip"
 
   health_check {
     healthy_threshold   = "5"
