@@ -1,0 +1,38 @@
+[
+    {
+        "environment": [
+            { "name": "BIND_ADDRESS", "value": "${bind_address}" },
+            { "name": "LOGLEVEL", "value": "${log_level}" },
+            { "name": "STREAMING_BACKEND_URL", "value": "${streaming_api_backend_url}" },
+            { "name": "REDIS_URL", "value": "${redis_url}" },
+            { "name": "REDIS_POOL_SIZE", "value": "${redis_pool_size}" },
+            { "name": "CACHE_EXPIRY_IN_SECONDS", "value": "${cache_expiry_seconds}" },
+            { "name": "STREAM_BACKEND_FILINGS_PATH", "value": "${stream_backend_filings_path}" },
+            { "name": "STREAM_BACKEND_COMPANIES_PATH", "value": "${stream_backend_companies_path}" },
+            { "name": "STREAM_BACKEND_INSOLVENCY_PATH", "value": "${stream_backend_insolvency_path}" },
+            { "name": "STREAM_BACKEND_CHARGES_PATH", "value": "${stream_backend_charges_path}" },
+            { "name": "STREAM_BACKEND_OFFICERS_PATH", "value": "${stream_backend_officers_path}" },
+            { "name": "STREAM_BACKEND_PSCS_PATH", "value": "${stream_backend_pscs_path}" }
+        ],
+        "name": "streaming-api-cache",
+        "image": "${docker_registry}/chs-streaming-api-cache:${streaming_api_cache_version}",
+        "cpu": 1,
+        "memory": 512,
+        "portMappings": [{
+            "containerPort": ${bind_address},
+            "hostPort": ${bind_address}
+        }],
+        "logConfiguration": {
+            "logDriver": "awslogs",
+            "options": {
+                "awslogs-create-group": "true",
+                "awslogs-region": "${aws_region}",
+                "awslogs-group": "/ecs/${name_prefix}/streaming-api-cache",
+                "awslogs-stream-prefix": "ecs"
+            }
+        },
+        "secrets": [
+        ],
+        "essential": true
+    }
+]

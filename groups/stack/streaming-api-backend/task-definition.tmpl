@@ -1,0 +1,28 @@
+[{
+    "environment": [
+        { "name": "BIND_ADDRESS", "value": "${bind_address}" },
+        { "name": "SCHEMA_REGISTRY_URL", "value": "${schema_registry_url}" },
+        { "name": "KAFKA_STREAMING_BROKER_ADDR", "value": "${kafka_broker_url}" },
+        { "name": "LOGLEVEL", "value": "${log_level}" }
+    ],
+    "name": "streaming-api-backend",
+    "image": "${docker_registry}/chs-streaming-api-backend:${streaming_api_backend_version}",
+    "cpu": 1,
+    "memory": 512,
+    "portMappings": [{
+        "containerPort": ${bind_address},
+        "hostPort": ${bind_address}
+    }],
+    "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+            "awslogs-create-group": "true",
+            "awslogs-region": "${aws_region}",
+            "awslogs-group": "/ecs/${name_prefix}/streaming-api-backend",
+            "awslogs-stream-prefix": "ecs"
+        }
+    },
+    "secrets": [
+    ],
+    "essential": true
+}]

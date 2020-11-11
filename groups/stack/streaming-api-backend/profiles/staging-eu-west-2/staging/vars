@@ -1,0 +1,15 @@
+aws_bucket = "staging-eu-west-2.terraform-state.ch.gov.uk"
+remote_state_bucket = "ch-service-staging-terraform-state"
+environment = "staging"
+deploy_to = "staging"
+state_prefix = "env:/staging"
+aws_profile = "staging-eu-west-2"
+ec2_key_pair_name = "ch-aws-staging"
+docker_registry = "169942020521.dkr.ecr.eu-west-1.amazonaws.com"
+
+# shared configs
+log_level = "TRACE"
+
+# streaming api configs
+schema_registry_url = http://kafka-broker1.staging.aws.internal:8081
+kafka_broker_url = kafka-streaming-broker1.staging.aws.internal:9092,kafka-streaming-broker2.staging.aws.internal:9092,kafka-streaming-broker3.staging.aws.internal:9092
