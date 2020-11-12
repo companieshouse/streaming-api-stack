@@ -3,13 +3,34 @@ remote_state_bucket = "ch-service-staging-terraform-state"
 environment = "staging"
 deploy_to = "staging"
 state_prefix = "env:/staging"
-workspace_key_prefix = "streaming-api-stack"
-state_file_name = "streaming-api.tfstate"
 aws_profile = "staging-eu-west-2"
+ec2_key_pair_name = "ch-aws-staging"
 
 # Certificate for https access through ALB
 ssl_certificate_id = "arn:aws:iam::250991044064:server-certificate/Preprod2020"
 external_top_level_domain = "-staging-aws.companieshouse.gov.uk"
-internal_top_level_domain = ".staging.aws.internal"
 
-ec2_key_pair_name = "ch-aws-staging"
+asg_max_instance_count = "1"
+asg_desired_instance_count = "1"
+
+# shared configs
+log_level = "INFO"
+
+# eric stream configs
+eric_cache_url = "staging-chs-elasticache.3psdof.ng.0001.euw2.cache.amazonaws.com:6379"
+
+# streaming api frontend configs
+frontend_cache_broker_url = "http://localhost:18582"
+frontend_cache_max_connections = 10
+frontend_flush_interval = 10
+frontend_heartbeat_interval = 30
+frontend_request_timeout = 900
+
+# streaming api cache configs
+cache_streaming_api_backend_url = "http://localhost:18581"
+cache_redis_url = "staging-chs-elasticache.3psdof.ng.0001.euw2.cache.amazonaws.com:6379"
+cache_expiry_seconds = 600
+
+# streaming api backend configs
+schema_registry_url = http://kafka-broker1.staging.aws.internal:8081
+kafka_broker_url = kafka-streaming-broker1.staging.aws.internal:9092,kafka-streaming-broker2.staging.aws.internal:9092,kafka-streaming-broker3.staging.aws.internal:9092

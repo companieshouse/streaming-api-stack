@@ -123,19 +123,16 @@ module "ecs-services" {
   ssl_certificate_id               = var.ssl_certificate_id
   zone_id                          = var.zone_id
   external_top_level_domain        = var.external_top_level_domain
-  internal_top_level_domain        = var.internal_top_level_domain
   application_ids                  = local.application_ids
   # web_access_cidrs                 = concat(local.internal_cidrs,local.vpn_cidrs,local.management_private_subnet_cidrs,split(",",local.application_cidrs))
   web_access_cidrs                 = concat(local.internal_cidrs,local.vpn_cidrs,split(",",local.application_cidrs))
   ecs_cluster_id                   = module.ecs-cluster.ecs_cluster_id
   task_execution_role_arn          = module.ecs-cluster.ecs_task_execution_role_arn
   docker_registry                  = var.docker_registry
-  streaming_api_version            = var.streaming_api_version
+  
   eric_stream_version              = var.eric_stream_version
-  streaming_api_task_desired_count = var.streaming_api_task_desired_count
-
   log_level                        = var.log_level
-  cache_url                        = var.cache_url
+  eric_cache_url                   = var.eric_cache_url
   cache_max_connections            = var.cache_max_connections
   cache_max_idle                   = var.cache_max_idle
   cache_idle_timeout               = var.cache_idle_timeout
@@ -144,10 +141,17 @@ module "ecs-services" {
   graceful_shutdown_period         = var.graceful_shutdown_period
   default_stream_limit             = var.default_stream_limit
   stream_check_interval_seconds    = var.stream_check_interval_seconds
-  heartbeat_interval               = var.heartbeat_interval
-  request_timeout                  = var.request_timeout
-  schema_registry_url              = var.schema_registry_url
-  kafka_streaming_broker_addr      = var.kafka_streaming_broker_addr
+  streaming_api_frontend_version   = var.streaming_api_frontend_version
+  frontend_cache_broker_url        = var.frontend_cache_broker_url
+  frontend_heartbeat_interval      = var.frontend_heartbeat_interval
+  frontend_request_timeout         = var.frontend_request_timeout
 
-  # secrets_arn_map = module.secrets.secrets_arn_map
+  streaming_api_cache_version      = var.streaming_api_cache_version
+  cache_streaming_api_backend_url = var.cache_streaming_api_backend_url
+  cache_redis_url = var.cache_redis_url
+  cache_cache_expiry_seconds = var.cache_cache_expiry_seconds
+
+  streaming_api_backend_version = var.streaming_api_backend_version
+  backend_kafka_broker_url = var.backend_kafka_broker_url
+  backend_schema_registry_url = var.backend_schema_registry_url
 }

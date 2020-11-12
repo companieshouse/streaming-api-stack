@@ -19,10 +19,6 @@ variable "aws_bucket" {
   type        = string
   description = "The bucket used to store the current terraform state files"
 }
-variable "workspace_key_prefix" {
-  type        = string
-  description = "The bucket prefix used with the aws_bucket files."
-}
 variable "remote_state_bucket" {
   type        = string
   description = "Alternative bucket used to store the remote state files from ch-service-terraform"
@@ -41,10 +37,6 @@ variable "docker_registry" {
   type        = string
   description = "The FQDN of the Docker registry e.g. 169942020521.dkr.ecr.eu-west-2.amazonaws.com"
 }
-variable "streaming_api_version" {
-  type        = string
-  description = "The version of the streaming api service/container to run."
-}
 variable "eric_stream_version" {
   type        = string
   description = "The version of the eric stream service/container to run."
@@ -54,10 +46,23 @@ variable "log_level" {
   type        = string
   description = "The log level for services to use: TRACE, DEBUG, INFO or ERROR"
 }
-variable "streaming_api_task_desired_count" {
-  default     = 1
+
+variable "streaming_api_backend_task_desired_count" {
   type        = number
-  description = "Desired number of streaming api tasks"
+  description = "Desired number of streaming api backend tasks"
+  default = 1
+}
+
+variable "streaming_api_cache_task_desired_count" {
+  type        = number
+  description = "Desired number of streaming api cache tasks"
+  default = 1
+}
+
+variable "streaming_api_frontend_task_desired_count" {
+  type        = number
+  description = "Desired number of streaming api frontend tasks"
+  default = 1
 }
 
 # EC2
@@ -109,10 +114,6 @@ variable "external_top_level_domain" {
   type        = string
   description = "The type levelel of the DNS domain for external access."
 }
-variable "internal_top_level_domain" {
-  type        = string
-  description = "The type levelel of the DNS domain for internal access."
-}
 
 # # Vault
 # variable "vault_username" {
@@ -132,7 +133,7 @@ variable "internal_top_level_domain" {
 # }
 
 # eric stream service config variables
-variable "cache_url" {
+variable "eric_cache_url" {
   type = string
 }
 variable "cache_max_connections" {
@@ -168,18 +169,105 @@ variable "stream_check_interval_seconds" {
   default = "30"
 }
 
-# Streaming API service configs
-variable "heartbeat_interval" {
+# Backend configuration
+
+variable "streaming_api_backend_version" {
+  description = "The version of streaming API backend that will be deployed"
+  type = string
+}
+
+variable "backend_kafka_broker_url" {
+  description = "The URL of the Kafka broker that the backend will connect to"
+  type = string
+}
+
+variable "backend_schema_registry_url" {
+  description = "The URL of the schema registry instance schema definitions will be fetched from"
+  type = string
+}
+
+# Cache configuration
+
+variable "streaming_api_cache_version" {
+  type = string
+  description = "The build version of streaming API cache that will be deployed"
+}
+
+variable "cache_streaming_api_backend_url" {
+  description = "The URL at which a streaming API backend instance is hosted"
+  type = string
+}
+
+variable "cache_redis_url" {
+  description = "The URL at which a Redis cluster is hosted"
+  type = string
+}
+
+variable "cache_redis_pool_size" {
+  description = "The maximum number of Redis connections held by a connection pool"
+  type = number
+  default = 10
+}
+
+variable "cache_cache_expiry_seconds" {
+  description = "The elapsed time after which Redis cache entries will be removed"
+  type = number
+}
+
+variable "cache_stream_backend_filings_path" {
+  description = "The path at which new filings will be retrieved"
+  type = string
+  default = "/filings"
+}
+
+variable "cache_stream_backend_companies_path" {
+  description = "The path at which new companies will be retrieved"
+  type = string
+  default = "/companies"
+}
+
+variable "cache_stream_backend_insolvency_path" {
+  description = "The path at which new insolvencies will be retrieved"
+  type = string
+  default = "/company-insolvencies"
+}
+
+variable "cache_stream_backend_charges_path" {
+  description = "The path at which new charges will be retrieved"
+  type = string
+  default = "/company-charges"
+}
+
+variable "cache_stream_backend_officers_path" {
+  type = string
+  description = "The path at which new officers will be retrieved"
+  default = "/company-officers"
+}
+
+variable "cache_stream_backend_pscs_path" {
+  type = string
+  description = "The path at which new PSCs will be retrieved"
+  default = "/persons-with-significant-control"
+}
+
+# Frontend configuration
+
+variable "streaming_api_frontend_version" {
+  type = string
+  description = "The build version of streaming API frontend that will be deployed"
+}
+
+variable "frontend_cache_broker_url" {
+  type = string
+  description = "The location of a running streaming API cache broker service"
+}
+
+variable "frontend_heartbeat_interval" {
   type = string
   default = "30"
 }
-variable "request_timeout" {
+
+variable "frontend_request_timeout" {
   type = string
   default = "86400"
-}
-variable "schema_registry_url" {
-  type = string
-}
-variable "kafka_streaming_broker_addr" {
-  type = string
 }

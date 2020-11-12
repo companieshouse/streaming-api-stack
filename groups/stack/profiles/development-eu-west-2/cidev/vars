@@ -3,30 +3,36 @@ remote_state_bucket = "ch-development-terraform-state-london"
 environment = "cidev"
 deploy_to = "development"
 state_prefix = "env:/development"
-workspace_key_prefix = "streaming-api-stack"
-#state_file_name = "streaming-api.tfstate"
 aws_profile = "development-eu-west-2"
+ec2_key_pair_name = "chs-cidev"
+docker_registry = "169942020521.dkr.ecr.eu-west-1.amazonaws.com"
 
 # Certificate for https access through ALB
 ssl_certificate_id = "arn:aws:acm:eu-west-2:169942020521:certificate/8d7db053-7416-4e56-946b-762d0a34c899"
 zone_id = "Z2KSI4Z5ZN9NT0"
 external_top_level_domain = ".cidev.aws.chdev.org"
-internal_top_level_domain = "-cidev.development.aws.internal"
 
-ec2_key_pair_name = "chs-cidev"
-
-asg_max_instance_count = "2"
-asg_desired_instance_count = "2"
-
-# task scaling
-streaming_api_task_desired_count = 2
+asg_max_instance_count = "1"
+asg_desired_instance_count = "1"
 
 # shared configs
 log_level = "TRACE"
 
 # eric stream configs
-cache_url = "cidev-chs-elasticache.9vgugg.ng.0001.euw2.cache.amazonaws.com:6379"
+eric_cache_url = "cidev-chs-elasticache.9vgugg.ng.0001.euw2.cache.amazonaws.com:6379"
 
-# streaming api configs
-schema_registry_url = "http://kafka-broker1-cidev.development.aws.internal:8081"
-kafka_streaming_broker_addr = "kafka-streaming-broker1-cidev.development.aws.internal:9092"
+# streaming api frontend configs
+cache_max_connections = 10
+flush_interval = 10
+frontend_cache_broker_url = "http://localhost:18582"
+frontend_heartbeat_interval = 30
+frontend_request_timeout = 900
+
+# streaming api cache configs
+cache_streaming_api_backend_url = "http://localhost:18581"
+cache_redis_url = "chs-elasticache.9vgugg.ng.0001.euw2.cache.amazonaws.com:6379"
+cache_cache_expiry_seconds = 600
+
+# streaming api backend configs
+backend_schema_registry_url = "http://kafka-broker1-cidev.development.aws.internal:8081"
+backend_kafka_broker_url = "kafka-streaming-broker1-cidev.development.aws.internal:9092"

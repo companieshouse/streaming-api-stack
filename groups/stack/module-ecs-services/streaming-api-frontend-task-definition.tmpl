@@ -13,7 +13,7 @@
             { "name": "GRACEFUL_SHUTDOWN_PERIOD", "value": "${graceful_shutdown_period}" },
             { "name": "DEFAULT_STREAM_LIMIT", "value": "${default_stream_limit}" },
             { "name": "STREAM_CHECK_INTERVAL_SECONDS", "value": "${stream_check_interval_seconds}" },
-            { "name": "PROXY_TARGET_URLS", "value": "http://localhost:${streaming_api_port}" },
+            { "name": "PROXY_TARGET_URLS", "value": "http://localhost:${bind_address}" },
             { "name": "MODE", "value": "stream" },
             { "name": "LOGLEVEL", "value": "${log_level}" },
             { "name": "API_KEY", "value": "secret-api-key-placeholder" },
@@ -43,27 +43,26 @@
     },
     {
         "environment": [
-            { "name": "PORT", "value": "${streaming_api_port}" },
+            { "name": "BIND_ADDRESS", "value": "${bind_address}" },
             { "name": "HEARTBEAT_INTERVAL", "value": "${heartbeat_interval}" },
             { "name": "REQUEST_TIMEOUT", "value": "${request_timeout}" },
-            { "name": "SCHEMA_REGISTRY_URL", "value": "${schema_registry_url}" },
-            { "name": "KAFKA_STREAMING_BROKER_ADDR", "value": "${kafka_streaming_broker_addr}" },
+            { "name": "CACHE_BROKER_URL", "value": "${cache_broker_url}" },
             { "name": "LOGLEVEL", "value": "${log_level}" }
         ],
-        "name": "streaming-api",
-        "image": "${docker_registry}/chs-streaming-api:${streaming_api_version}",
+        "name": "streaming-api-frontend",
+        "image": "${docker_registry}/chs-streaming-api-frontend:${streaming_api_frontend_version}",
         "cpu": 1,
         "memory": 512,
         "portMappings": [{
-            "containerPort": ${streaming_api_port},
-            "hostPort": ${streaming_api_port}
+            "containerPort": ${bind_address},
+            "hostPort": ${bind_address}
         }],
         "logConfiguration": {
             "logDriver": "awslogs",
             "options": {
                 "awslogs-create-group": "true",
                 "awslogs-region": "${aws_region}",
-                "awslogs-group": "/ecs/${name_prefix}/streaming-api",
+                "awslogs-group": "/ecs/${name_prefix}/streaming-api-frontend",
                 "awslogs-stream-prefix": "ecs"
             }
         },
